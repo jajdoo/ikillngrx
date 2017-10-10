@@ -1,0 +1,7 @@
+<h1>
+  {{title}}
+  <app-nav 
+    [visible] = "navVisible$ | async" 
+    (changeNavVisibility)="changeNavVisibility($event)">
+  </app-nav>
+</h1>
