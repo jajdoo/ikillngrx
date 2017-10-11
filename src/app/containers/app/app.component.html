@@ -1,7 +1,10 @@
-<h1>
-  {{title}}
-  <app-nav 
-    [visible] = "navVisible$ | async" 
-    (changeNavVisibility)="changeNavVisibility($event)">
-  </app-nav>
-</h1>
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    KEKLEL
+  </h1>
+  <app-hate-stas-status
+    [hateStas]="hateStas$ | async"
+    (setHate)="setHate($event)">
+  </app-hate-stas-status>
+</div>

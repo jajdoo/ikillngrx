@@ -1,28 +1,27 @@
-import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
-import { HttpModule } from "@angular/http";
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
-import { AppComponent } from "./containers/app/app.component";
-import { NavComponent } from "./components/nav/nav.component";
-import { StoreModule } from "@ngrx/store/store";
-import { reducers } from "./reducers";
-import { environment } from "../environments/environment";
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
+import {AppComponent} from './containers/app/app.component';
+import {StoreModule} from '@ngrx/store';
+import {metaReducers, reducers} from './reducers/index';
+import {CommonModule} from '@angular/common';
+import {HateStasStatusComponent} from './components/hate-stat-status/hate-stas-status.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavComponent
+    HateStasStatusComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    HttpModule,
-    StoreModule.forRoot(reducers),
-    StoreDevtoolsModule.instrument()
+    CommonModule,
+    StoreModule.forRoot(reducers, {metaReducers}),
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

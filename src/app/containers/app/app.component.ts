@@ -1,24 +1,23 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
-import { Store } from "@ngrx/store/store";
-import * as fromRoot from "../../reducers/index";
-import { Observable } from "rxjs/Observable";
-import * as Nav from "../../actions/nav";
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {Store} from '@ngrx/store';
+
+import * as fromCore from '../../reducers/index';
+import {SetStasHatered} from '../../actions/feelings';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
+  selector: 'app-root',
+  templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ["./app.component.css"]
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = "Kill Stas!";
-  navVisible$: Observable<boolean>;
+  hateStas$: Observable<boolean>;
 
-  constructor(private store: Store<fromRoot.State>) {
-    this.navVisible$ = this.store.select<boolean>(fromRoot.getNavVisibile);
+  constructor(private store: Store<fromCore.State>) {
+    this.hateStas$ = this.store.select(fromCore.getHateStas);
   }
-
-  changeNavVisibility(visible: boolean) {
-    this.store.dispatch(new Nav.ChangeNavVisibility(visible));
+  setHate(hating: boolean) {
+    this.store.dispatch(new SetStasHatered(hating));
   }
 }
