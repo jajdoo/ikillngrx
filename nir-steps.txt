@@ -1,0 +1,133 @@
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+init
+`++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ng new [project name]
+ng install -save @ngrx/store
+ng install -save @ngrx/effects
+ng install -save @ngrx/router-store
+ng install -save @ngrx/store-devtools
+ng install -save ngrx-store-freeze
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+create root module and register it in app module
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ng generate module core
+move app component parts to core/containers/app
+add decleration/exports for core module (AppComponent)
+add forRoot implementation in CoreModule 
+	return {ngModule: CoreModule}
+add CoreModule.forRoot() in AppModule imports
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+create initial empty state for app module (will hold meta/routing)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+create app/reducers/index.ts
+	create & export empty State interface
+	create & export empty reducers: ActionReducerMap
+
+app.module:
+	import reducers from app/reducers.index
+	add StoreModule.forRoot(reducers, {}) to module imports
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+add meta reducers to app module (logger, freeze) & debug time travel support
+note: redux devtools will not work until we call store.select atleast once
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+create app/reducers/index
+	import storefreeze
+	create & export logger: ActionReducer<State> (logs state/action)
+	create & export metaReducers: MetaReducer<State>[] (logger & storeFreeze when in dev, empty otherwise)
+
+app.module:
+	add StoreDevtoolsModule.instrument() to imports if in dev
+	add StoreModule.forRoot(reducers, {metaReducers}) to imports
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+adding feature state/actions/reducer to a module (example: adding 'feelings' state/actions/reducer CoreModule)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+see 'adding feature example.txt'
+
+1. FILES
+	[module-name]/actions/[feature-name].ts		-> (action string consts, Action objects, Actions type)
+	[module-name]/reducers/[feature-name].ts 	-> (State, selector functions, reducer function)
+	[module-name]/reducers/index.ts				-> (once per module -> State, ActionReducerMap, FeatureSelectors, Selectors)
+
+2. INDEX: STATE, REDUCER MAP (INIT)
+	[module-name]/reducers/index.ts
+		create & export empty State interface
+		create & export empty reducers: ActionReducerMap
+		
+3. FEATURE: STATE, SELECTORS
+	[module-name]/reducers/[feature-name].ts
+		create & export State interface		
+		create private initial State object
+		create & export selector functions
+		
+4. FEATURE: ACTIONS
+	[module-name]/actions/[feature-name].ts
+		create & export action string
+		create & export action objects
+		create & export Actions type
+
+5. FEATURE: REDUCER
+	[module-name]/reducers/[feature-name].ts
+		create & export empty reducer function
+		import all from [module-name]/actions/[feature-name].ts actions as [featureName]
+		add switch case for each action in reducer function
+
+6. INDEX: NGRX SELECTORS / FEATURE SELECTORS, NGRX REDUCER MAP (PER FEATURE)
+	[module-name]/actions/[feature-name].ts
+		import all from feature as from[FeatureName]
+		add from[FeatureName].State to index state State		
+		add from[FeatureName].reducer to reducer map	
+		create FeatureSelector
+		create Selectors
+
+7. IMPORT NGRX REDUCERS MAP TO MODULE
+	[module-name]/[module-name].module.ts
+		import reducers from []
+		if in feature module: 
+			add StoreModule.forFeature(reducers) to module imports
+		if in root module:
+			add StoreModule.forRoot(reducers) to module imports
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+on push:
+https://github.com/ngrx/example-app/issues/164
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+router
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+add file app/reducers/routes
+	add RouterState
+	add CustomSerializer
+	add routes object
+
+module file:
+	add routes
+	add StoreRouterConnectingModule
+	add provider: {provide: RouterStateSerializer, useClass: CustomSerializer}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

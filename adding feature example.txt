@@ -1,0 +1,295 @@
+adding feature example
+
+module: Core
+	feature: feelings { hateStas: boolean }
+	actions: HATE_STAS / STOP_HATING_STAS
+
+
+############## INDEX: STATE, REDUCER (INIT) ############## 
+core/reducers/index.ts
+--------------------------------------------------
+import {ActionReducerMap} from '@ngrx/store';
+
+export interface State { 
+} 
+ 
+export const reducers: ActionReducerMap<State> = {
+};
+--------------------------------------------------
+
+core/actions/feelings.ts
+--------------------------------------------------
+--------------------------------------------------
+
+core/reducers/feelings.ts
+--------------------------------------------------
+--------------------------------------------------
+
+
+
+
+
+############## FEATURE: STATE, SELECTORS ############## 
+core/reducers/index.ts
+--------------------------------------------------
+import {ActionReducerMap} from '@ngrx/store';
+
+export interface State { 
+} 
+ 
+export const reducers: ActionReducerMap<State> = {
+};
+--------------------------------------------------
+
+core/actions/feelings.ts
+--------------------------------------------------
+--------------------------------------------------
+
+core/reducers/feelings.ts
+--------------------------------------------------
+export interface State { 
+  hateStas: boolean; 
+} 
+ 
+const initialState: State = { 
+  hateStas: true 
+}; 
+ 
+// selector functions 
+export const getHateStas = (state: State) => state.hateStas;
+--------------------------------------------------
+
+
+
+
+
+
+############## FEATURE: ACTIONS ############## 
+core/reducers/index.ts
+--------------------------------------------------
+import {ActionReducerMap} from '@ngrx/store';
+
+export interface State { 
+} 
+ 
+export const reducers: ActionReducerMap<State> = {
+};
+--------------------------------------------------
+
+core/actions/feelings.ts
+--------------------------------------------------
+import {Action} from '@ngrx/store'; 
+ 
+export const HATE_STAS = '[Core] Hate Stas'; 
+export const STOP_HATING_STAS = '[Core] Stop Hating Stas'; 
+ 
+export class HateStas implements Action { 
+  readonly type = HATE_STAS; 
+} 
+ 
+export class StopHatingStas implements Action { 
+  readonly type = STOP_HATING_STAS; 
+} 
+ 
+export type Actions = HateStas | StopHatingStas; 
+--------------------------------------------------
+
+core/reducers/feelings.ts
+--------------------------------------------------
+export interface State { 
+  hateStas: boolean; 
+} 
+ 
+const initialState: State = { 
+  hateStas: true 
+}; 
+ 
+// selector functions 
+export const getHateStas = (state: State) => state.hateStas;
+--------------------------------------------------
+
+
+
+
+
+############## FEATURE: REDUCER ############## 
+core/reducers/index.ts
+--------------------------------------------------
+import {ActionReducerMap} from '@ngrx/store';
+
+export interface State { 
+} 
+ 
+export const reducers: ActionReducerMap<State> = {
+};
+--------------------------------------------------
+
+core/actions/feelings.ts
+--------------------------------------------------
+import {Action} from '@ngrx/store'; 
+ 
+export const HATE_STAS = '[Core] Hate Stas'; 
+export const STOP_HATING_STAS = '[Core] Stop Hating Stas'; 
+ 
+export class HateStas implements Action { 
+  readonly type = HATE_STAS; 
+} 
+ 
+export class StopHatingStas implements Action { 
+  readonly type = STOP_HATING_STAS; 
+} 
+ 
+export type Actions = HateStas | StopHatingStas; 
+--------------------------------------------------
+
+core/reducers/feelings.ts
+--------------------------------------------------
+import * as Feelings from '../actions/feelings'; 
+
+// selector functions 
+export const getHateStas = (state: State) => state.hateStas; 
+ 
+// reducer function 
+export function reducer(state = initialState, action: Feelings.Actions): State { 
+  switch (action.type) { 
+    case Feelings.HATE_STAS: 
+      return { 
+        hateStas: true 
+      }; 
+ 
+    case Feelings.STOP_HATING_STAS: 
+      return { 
+        hateStas: false 
+      }; 
+  } 
+  return state; 
+} 
+--------------------------------------------------
+
+
+
+
+
+############## FEATURE: REDUCER ############## 
+core/reducers/index.ts
+--------------------------------------------------
+import {ActionReducerMap} from '@ngrx/store';
+
+export interface State { 
+} 
+ 
+export const reducers: ActionReducerMap<State> = {
+};
+--------------------------------------------------
+
+core/actions/feelings.ts
+--------------------------------------------------
+import {Action} from '@ngrx/store'; 
+ 
+export const HATE_STAS = '[Core] Hate Stas'; 
+export const STOP_HATING_STAS = '[Core] Stop Hating Stas'; 
+ 
+export class HateStas implements Action { 
+  readonly type = HATE_STAS; 
+} 
+ 
+export class StopHatingStas implements Action { 
+  readonly type = STOP_HATING_STAS; 
+} 
+ 
+export type Actions = HateStas | StopHatingStas; 
+--------------------------------------------------
+
+core/reducers/feelings.ts
+--------------------------------------------------
+import * as Feelings from '../actions/feelings'; 
+
+// selector functions 
+export const getHateStas = (state: State) => state.hateStas; 
+ 
+// reducer function 
+export function reducer(state = initialState, action: Feelings.Actions): State { 
+  switch (action.type) { 
+    case Feelings.HATE_STAS: 
+      return { 
+        hateStas: true 
+      }; 
+ 
+    case Feelings.STOP_HATING_STAS: 
+      return { 
+        hateStas: false 
+      }; 
+  } 
+  return state; 
+} 
+--------------------------------------------------
+
+
+
+
+
+############## INDEX: NGRX SELECTORS / FEATURE SELECTORS, NGRX REDUCER MAP (PER FEATURE) ############## 
+core/reducers/index.ts
+--------------------------------------------------
+import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store'; 
+import * as fromFeelings from './feelings'; 
+ 
+export interface State { 
+  feelings: fromFeelings.State; 
+} 
+ 
+export const reducers: ActionReducerMap<State> = { 
+  feelings: fromFeelings.reducer 
+}; 
+ 
+// feelings feature 
+export const getFeelingsState = createFeatureSelector<fromFeelings.State>('feelings'); 
+ 
+// attribute selectors 
+export const getHateStas = createSelector( 
+  getFeelingsState, 
+  fromFeelings.getHateStas 
+); 
+--------------------------------------------------
+
+core/actions/feelings.ts
+--------------------------------------------------
+import {Action} from '@ngrx/store'; 
+ 
+export const HATE_STAS = '[Core] Hate Stas'; 
+export const STOP_HATING_STAS = '[Core] Stop Hating Stas'; 
+ 
+export class HateStas implements Action { 
+  readonly type = HATE_STAS; 
+} 
+ 
+export class StopHatingStas implements Action { 
+  readonly type = STOP_HATING_STAS; 
+} 
+ 
+export type Actions = HateStas | StopHatingStas; 
+--------------------------------------------------
+
+core/reducers/feelings.ts
+--------------------------------------------------
+import * as Feelings from '../actions/feelings'; 
+
+// selector functions 
+export const getHateStas = (state: State) => state.hateStas; 
+ 
+// reducer function 
+export function reducer(state = initialState, action: Feelings.Actions): State { 
+  switch (action.type) { 
+    case Feelings.HATE_STAS: 
+      return { 
+        hateStas: true 
+      }; 
+ 
+    case Feelings.STOP_HATING_STAS: 
+      return { 
+        hateStas: false 
+      }; 
+  } 
+  return state; 
+} 
+--------------------------------------------------

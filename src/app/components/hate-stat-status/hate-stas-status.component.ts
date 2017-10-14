@@ -2,8 +2,13 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-hate-stas-status',
-  templateUrl: './hate-stas-status.component.html',
-  styleUrls: ['./hate-stas-status.component.css']
+  template: `
+    <h2>
+      ARE WE HATIN STAS? {{hateStas}} !!
+      <button (click)="hate()">HATE</button>
+      <button (click)="stopTheHate()">STOP THE HATE</button>
+    </h2>
+  `
 })
 export class HateStasStatusComponent {
 

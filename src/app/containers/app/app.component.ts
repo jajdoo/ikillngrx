@@ -1,9 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Store} from '@ngrx/store';
-
-import * as fromCore from '../../reducers/index';
-import {SetStasHatered} from '../../actions/feelings';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,12 +8,14 @@ import {SetStasHatered} from '../../actions/feelings';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  hateStas$: Observable<boolean>;
-
-  constructor(private store: Store<fromCore.State>) {
-    this.hateStas$ = this.store.select(fromCore.getHateStas);
+  constructor(private router: Router) {
   }
-  setHate(hating: boolean) {
-    this.store.dispatch(new SetStasHatered(hating));
+
+  async goSomeWhere() {
+    await this.router.navigate(['/aaa']);
+  }
+
+  async goToHate() {
+    await this.router.navigate(['/hate']);
   }
 }

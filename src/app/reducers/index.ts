@@ -2,14 +2,18 @@ import { storeFreeze } from 'ngrx-store-freeze';
 import {ActionReducer, MetaReducer} from '@ngrx/store';
 import {environment} from '../../environments/environment';
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
-import * as fromFeelings from '../reducers/feelings';
+import {routerReducer, RouterReducerState} from '@ngrx/router-store';
+import * as fromRouter from './routes';
+import * as fromFeelings from './feelings';
 
 export interface State {
   feelings: fromFeelings.State;
+  router: RouterReducerState<fromRouter.RouterState>;
 }
 
 export const reducers: ActionReducerMap<State> = {
-  feelings: fromFeelings.reducer
+  feelings: fromFeelings.reducer,
+  router: routerReducer
 };
 
 export function logger(reducer: ActionReducer<State>): ActionReducer<State> {

@@ -1,10 +1,8 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1>
     KEKLEL
   </h1>
-  <app-hate-stas-status
-    [hateStas]="hateStas$ | async"
-    (setHate)="setHate($event)">
-  </app-hate-stas-status>
+  <button (click)="goToHate()">GO TO HATE</button>
+  <button (click)="goSomeWhere()">GO SOME WHERE</button>
+  <router-outlet></router-outlet>
 </div>
